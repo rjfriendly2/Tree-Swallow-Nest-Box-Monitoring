@@ -45,6 +45,7 @@ visit_sum_data25$incubation_start <- as.Date(visit_sum_data25$incubation_start)
 visit_sum_data25$actual_hatch <- as.Date(visit_sum_data25$actual_hatch)
 visit_sum_data25$predicted_fledge <- as.Date(visit_sum_data25$predicted_fledge)
 visit_sum_data25$actual_fledge <- as.Date(visit_sum_data25$actual_fledge)
+visit_sum_data25$successful <- as.factor(visit_sum_data25$successful)
 head(visit_sum_data25)
 
 
@@ -108,6 +109,7 @@ completed_nests <- visit_sum_data25 %>%
   mutate(next_check_7days = clutch_completion + 7) %>%
   mutate(nestling_age_11 = predicted_hatch + 11) %>%
   mutate(real_nestling_age_11 = actual_hatch + 11)
+write_xlsx(completed_nests, "output/phenology_updates/completed_nests.xlsx")
 
 # create a histogram that shows the dates of where the nestlings should be 11 days old
 ggplot(completed_nests, aes(x = nestling_age_11)) +

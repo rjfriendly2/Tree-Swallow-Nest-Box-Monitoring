@@ -228,6 +228,7 @@ ggplot(init_hatch_phen, aes(x = doy, fill = event)) +
                "Fledge" = "#59A14F") 
     ) +
   labs(
+    title = "2025 Tree Swallow Nest Monitoring",
     x = "Date",
     y = "Number of Nests",
   ) + 
@@ -236,7 +237,8 @@ ggplot(init_hatch_phen, aes(x = doy, fill = event)) +
     panel.grid.major = element_blank(),
     panel.grid.minor = element_blank(),
     legend.position = "none",
-    axis.text.x = element_text(angle = 45, hjust = 1)
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(hjust = 0.5)
   )
 
 #save ggplot figure
