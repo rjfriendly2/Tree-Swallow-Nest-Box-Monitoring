@@ -10,7 +10,7 @@ library(data.table)
 library(tidyverse)
 library(lubridate)
 library(dplyr)
-library(openxlsx)
+#library(openxlsx)
 library(ggplot2)
 library(tidyr)
 library(writexl)
@@ -55,13 +55,21 @@ summary(visit_sum_data26) # look at mean min and max
 se_incubation <- sd(visit_sum_data26$incub_length, na.rm = TRUE) / sqrt(sum(!is.na(visit_sum_data26$incub_length)))
 # Incubation mean 13.5 +- 0.26, range (10 - 16)
 
-### Get Success rate
+### Get Success rate for occupied nests
 visit_sum_data26 %>%
+  filter(!is.na(clutch_initiation)) %>%
   summarise(
     num_success = sum(successful == "Y", na.rm = TRUE),
     success_rate = mean(successful == "Y", na.rm = TRUE)
   )
 
+### Get Success rate from all boxes
+visit_sum_data26 %>%
+  summarise(
+    successful_boxes = sum(successful == "Y", na.rm = TRUE),
+    total_boxes = n_distinct(box_number),
+    success_rate = successful_boxes / total_boxes
+  )
 
 ### Get Nest Box Occupancy rate
 visit_sum_data26 %>%
@@ -76,7 +84,7 @@ visit_sum_data26$nestling_age <- as.numeric(visit_sum_data26$actual_fledge - vis
 summary(visit_sum_data26)
 se_nestling_age <- sd(visit_sum_data26$nestling_age, na.rm = TRUE) / sqrt(sum(!is.na(visit_sum_data26$nestling_age)))
 
-### Get the total of eggs laid accross all nests
+### Get the total of eggs laid across all nests
 sum(visit_sum_data26$number_eggs)
 sum(visit_sum_data26$number_hatched)
 
@@ -96,7 +104,7 @@ visit_sum_data26 %>%
     success_rate = successful_boxes / used_boxes
   )
 
-### Get proportion of successfull fledged nests from ACTIVE boxes
+### Get proportion of successful fledged nests from ACTIVE boxes
 visit_sum_data26 %>%
   summarise(
     active_boxes = sum(!is.na(clutch_initiation)),
@@ -104,7 +112,7 @@ visit_sum_data26 %>%
     success_rate = successful_active_boxes / active_boxes
   )
 
-### Get a proportioon of hatched eggs from ACTIVE boxes
+### Get a proportion of hatched eggs from ACTIVE boxes
 visit_sum_data26 %>%
   summarise(
     active_nests = sum(!is.na(clutch_initiation)),
